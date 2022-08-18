@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Főoldal{% endblock title %}
+
+
+{% block content %}
+<div class="container ">
+    <div class="infoBar">Available Tasks</div>
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-4">
+
+
+    {% for task in data %}
+        <div class="col p-1">
+            <div class="card">
+                  <div class="card-body {% if task.assigned_user == request.user %} assignedTask {% endif %}">
+                    <h5 class="card-title textPrimary">{{task.task_name}}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Assigned: {{task.is_assigned}}</h6>
+                      {% if task.is_assigned %}
+                            <h6 class="card-subtitle mb-2 text-muted">Assigned to: {{task.assigned_user.username}}</h6>
+                      {% endif %}
+                    <p class="card-text textPrimaryDark">{{task.task_description}}</p>
+                    <p class="card-text textPrimaryDark"><strong>Process numbers: {{task.all_task_details.all.count}}</strong></p>
+                    <p class="card-text textPrimaryDark"><strong>Deadline: {{task.deadline | timeuntil}}</strong></p>
+                    <a href="{% url 'tasks:task_view' task.pk %}" type="button" class="btn btn-outline-secondary">View<i class="bi bi-search p-2"></i></a>
+                  </div>
+            </div>
+        </div>
+
+    {% endfor %}
+
+    </div>
+
+    {% if is_boss_process %}
+    <div class="infoBar">Finished Tasks</div>
+    <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-4">
+        {% for task in finished_data %}
+            <div class="col p-1">
+                <div class="card text-secondary">
+                      <div class="card-body bg-dark text-secondary {% if task.assigned_user == request.user %} assignedTask {% endif %}">
+                        <h5 class="card-title text-light">{{task.task_name}}</h5>
+                        <h6 class="card-subtitle mb-2 ">Assigned: {{task.is_assigned}}</h6>
+                          {% if task.is_assigned %}
+                                <h6 class="card-subtitle mb-2 ">Assigned to: {{task.assigned_user.username}}</h6>
+                          {% endif %}
+                        <p class="card-text ">{{task.task_description}}</p>
+                        <p class="card-text "><strong>Process numbers: {{task.all_task_details.all.count}}</strong></p>
+                        <p class="card-text "><strong>Deadline: {{task.deadline | timeuntil}}</strong></p>
+                        <p class="card-text text-light "><strong>Finished: {{task.finished_date }}</strong></p>
+                        <a href="{% url 'tasks:task_view' task.pk %}" type="button" class="btn btn-outline-secondary">View<i class="bi bi-search p-2"></i></a>
+                      </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+
+</div>
+{% endblock content%}

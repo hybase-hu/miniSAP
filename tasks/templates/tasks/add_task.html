@@ -1,0 +1,20 @@
+{% extends 'base/base.html' %}
+
+{% block title %}TASK - Add new task{% endblock title %}
+
+
+{% block content %}
+
+<div class="card mx-auto" style="max-width:800px">
+    <div class="card-body textPrimary"><h4 class="card-title">Add new task</h4></div>
+    <div class="card-body textPrimary">
+        <form action="" method="post">
+            {%csrf_token%}
+            {{form.as_p}}
+            <input type="submit" class="btn btn-dark w-100" value="Save">
+        </form>
+    </div>
+</div>
+
+
+{% endblock content%}

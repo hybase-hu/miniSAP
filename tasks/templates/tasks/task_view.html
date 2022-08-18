@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+
+{% block title %}TASK - {{data.task_name}}{% endblock title %}
+
+
+{% block content %}
+<div class="container ">
+    <div class="infoBar">Task - {{data.task_name}}</div>
+    <div class="card">
+          <div class="card-body">
+            <h5 class="card-title textPrimary">{{data.task_name}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Assigned: {{data.is_assigned}}</h6>
+            {% if data.is_assigned %}
+                <h6 class="card-subtitle mb-2 text-muted">Assigned to: {{data.assigned_user.username}}</h6>
+            {% endif %}
+            <p class="card-text textPrimaryDark">{{data.task_description}}</p>
+            {% if not is_my_task%}
+            <form action="{% url 'tasks:task_modify' data.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning">I will take over<i class="bi bi-arrow-bar-left p-2"></i></button>
+            </form>
+            {% endif %}
+          </div>
+    </div>
+
+
+
+
+    <div class="infoBar">Task process</div>
+
+    {% for t in data.all_task_details.all|dictsortreversed:"modify_date" %}
+    <div class="card mt-1 bgPrimary">
+          <div class="card-body">
+            <h5 class="card-title textSecondary">{{t.user_id.username}}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Modify:{{t.modify_date}}</h6>
+            <p class="card-text text-muted">{{t.modify_desc}}</p>
+          </div>
+    </div>
+    {% empty %}
+    <h5>--- no process yet</h5>
+    {% endfor %}
+
+
+    {% if is_my_task and data.is_finished is not True %}
+    <div class="card mt-3 textPrimary">
+    <form action="{% url 'tasks:task_modify' data.pk %}" method="post">
+        {% csrf_token %}
+        <div class="card-body"><h3 class="card-title textPrimary">New process save</h3></div>
+        <div class="card-body">
+            <label for="description" class="form-label">Process description</label>
+            <textarea class="form-control" id="description" name="description" rows="5" ></textarea>
+            <button type="submit" class="btn btn-dark mt-3" value="Save">Save<i class="bi bi-arrow-up-right-square p-2"></i></button>
+        </div>
+        <div class="card-footer">
+            <div class="form-check form-switch">
+              <input class="form-check-input" name="finished" type="checkbox" role="switch" id="flexSwitchCheckChecked" >
+              <label class="form-check-label" for="flexSwitchCheckChecked">This process is finished</label>
+            </div>
+        </div>
+    </form>
+    </div>
+    {% endif %}
+
+
+</div>
+
+{% endblock content%}
