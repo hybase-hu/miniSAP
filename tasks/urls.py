@@ -4,7 +4,7 @@ from tasks.views import all_task_views, task_view, task_modify, my_tasks_list, a
 
 app_name = "tasks"
 urlpatterns = [
-    path('', all_task_views),
+    path('', all_task_views,name="home"),
     path('task/<int:id>/', task_view,name="task_view"),
     path('task/<int:id>/modify/', task_modify,name="task_modify"),
     path('task/my/', my_tasks_list,name="my_tasks_list"),

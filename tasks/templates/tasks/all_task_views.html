@@ -18,7 +18,7 @@
                       {% if task.is_assigned %}
                             <h6 class="card-subtitle mb-2 text-muted">Assigned to: {{task.assigned_user.username}}</h6>
                       {% endif %}
-                    <p class="card-text textPrimaryDark">{{task.task_description}}</p>
+                    <p class="card-text textPrimaryDark">{{task.task_description|truncatechars:280}}</p>
                     <p class="card-text textPrimaryDark"><strong>Process numbers: {{task.all_task_details.all.count}}</strong></p>
                     <p class="card-text textPrimaryDark"><strong>Deadline: {{task.deadline | timeuntil}}</strong></p>
                     <a href="{% url 'tasks:task_view' task.pk %}" type="button" class="btn btn-outline-secondary">View<i class="bi bi-search p-2"></i></a>

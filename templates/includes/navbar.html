@@ -25,7 +25,7 @@
 
           {% if is_boss_process %}
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'tasks:add_new_task' %}">Add new Task</a>
+            <a class="nav-link {% if '/task/add/' == request.path %}active{% endif %}" href="{% url 'tasks:add_new_task' %}">Add new Task</a>
           </li>
           {% endif %}
 
@@ -33,6 +33,12 @@
           <li class="nav-item">
             <a class="nav-link {% if '/task/my/' == request.path %}active{% endif %}" href="{% url 'tasks:my_tasks_list' %}">My Tasks</a>
           </li>
+
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link " href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% endif %}
 
 
         </ul>
